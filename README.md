@@ -1,4 +1,5 @@
 ## Contributors
--Brandon Henry
+
+- Brandon Henry
 - Austin Hill
--joseph caldwell
+- Joseph Caldwell
