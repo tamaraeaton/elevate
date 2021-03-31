@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.mapusing">
+  package="com.practicemap">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -22,7 +22,7 @@
         </intent-filter>
       </activity>
       <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyB9ZEPhukDMfn4i6vP9XBZA9qw_IaVdqao" />
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD3pCgrdlCaWjT_AIe13jaeKf4zfpGK8R4" />
     </application>
 </manifest>

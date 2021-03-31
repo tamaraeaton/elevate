@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
 
 export default class App extends React.Component {
   state = {
@@ -26,15 +26,15 @@ export default class App extends React.Component {
         style={styles.map}
         showsUserLocation
         initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: 37.7896386,
+          longitude: -122.421646,
           latitudeDelta: 0.09,
           longitudeDelta: 0.035
         }}
       >
         <Marker
-          coordinate={{ latitude: 37.0025259, longitude: -122.4351431 }}
-          title={'San Francisco'}>
+          coordinate={{ latitude: 36.18468, longitude: -85.48911 }}
+          title={'moms house'}>
 
         </Marker>
       </MapView>
@@ -48,7 +48,5 @@ const styles = StyleSheet.create({
     height: '100%'
   }
 })
-
-
 
 
