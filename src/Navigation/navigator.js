@@ -26,7 +26,7 @@ function HomeStack() {
 const StackMap = createStackNavigator();
 function MapStack() {
   return (
-    <StackMap.Navigator initialRouteName="Home">
+    <StackMap.Navigator initialRouteName="Maps">
       <StackMap.Screen name="Maps" component={MapScreen} />
     </StackMap.Navigator>
   );

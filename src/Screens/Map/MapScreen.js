@@ -1,12 +1,11 @@
 import React from 'react';
 import {Text, View} from 'react-native';
+import MapComponent from '../../components/mapComponent';
 
 const MapScreen = () => {
   return (
     <>
-      <View>
-        <Text>This is our map Screen</Text>
-      </View>
+    <MapComponent/>
     </>
   );
 };
