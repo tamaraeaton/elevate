@@ -18,6 +18,8 @@ target 'practiceMap' do
 
   pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
+  pod 'react-native-geolocation-service', :path => '../node_modules/react-native-geolocation-service'
+
   target 'practiceMapTests' do
     inherit! :complete
     # Pods for testing

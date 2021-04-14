@@ -114,7 +114,7 @@ const LocationDisplay = () => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
+      <View>
         <View style={styles.container}>
           <Image
             source={{
@@ -123,9 +123,9 @@ const LocationDisplay = () => {
             }}
             style={{width: 60, height: 60}}
           />
-          {/* <Text style={styles.boldText}>
+          <Text style={styles.boldText}>
             {locationStatus}
-          </Text> */}
+          </Text>
           <Text
             style={{
               justifyContent: 'center',
