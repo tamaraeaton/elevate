@@ -19,6 +19,7 @@ const LocationDisplay = () => {
   const [currentLongitude, setCurrentLongitude] = useState('...');
   const [currentLatitude, setCurrentLatitude] = useState('...');
   const [locationStatus, setLocationStatus] = useState('');
+  const [currentAltitude, setCurrentAltitude] = useState('...')
 
   useEffect(() => {
     const requestLocationPermission = async () => {
@@ -62,12 +63,14 @@ const LocationDisplay = () => {
         //getting the Longitude from the location json
         const currentLongitude = JSON.stringify(position.coords.longitude);
 
+        const currentAltitude = JSON.stringify(position.coords.altitude);
+
         //getting the Latitude from the location json
         const currentLatitude = JSON.stringify(position.coords.latitude);
 
         //Setting Longitude state
         setCurrentLongitude(currentLongitude);
-
+        setCurrentAltitude(currentAltitude);
         //Setting Longitude state
         setCurrentLatitude(currentLatitude);
       },
@@ -95,9 +98,11 @@ const LocationDisplay = () => {
 
         //getting the Latitude from the location json
         const currentLatitude = JSON.stringify(position.coords.latitude);
+        const currentAltitude = JSON.stringify(position.coords.altitude);
 
         //Setting Longitude state
         setCurrentLongitude(currentLongitude);
+        setCurrentAltitude(currentAltitude);
 
         //Setting Latitude state
         setCurrentLatitude(currentLatitude);
@@ -145,6 +150,18 @@ const LocationDisplay = () => {
               fontSize: 20,
             }}>
             Latitude: {currentLatitude}
+            
+          </Text>
+          <Text
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 16,
+              color: 'green',
+              fontSize: 20,
+            }}>
+            Altitude: {currentAltitude}
+            
           </Text>
           <View style={{marginTop: 20}}>
             <Button title="Current Location" onPress={getOneTimeLocation} />
@@ -158,7 +175,7 @@ const LocationDisplay = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
-    top: 230,
+    top: 150,
 
     padding: 10,
     alignItems: 'center',
