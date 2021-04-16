@@ -19,7 +19,7 @@ function HomeScreen({ navigation }) {
           source={image}
         />
         <Button
-          title="Check here for common elevations"
+          title="Click here for common elevations"
           color='#95b2e6'
           onPress={() => navigation.navigate('Home2')}
         />
