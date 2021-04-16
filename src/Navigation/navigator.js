@@ -11,13 +11,21 @@ import MapScreen from '../Screens/Map/MapScreen';
 import InfoScreen from '../Screens/Info/InfoScreen';
 // import { HomeStack, InfoStack, MapStack } from './index'
 //Set Stacks-----------------------------------
+const image = require('../../assets/elevate-logo.png')
 
 const Tab = createBottomTabNavigator();
 const StackHome = createStackNavigator();
 function HomeStack() {
   return (
     <StackHome.Navigator initialRouteName="Home">
-      <StackHome.Screen name="Home" component={HomeScreen} />
+      <StackHome.Screen 
+      name="Home" 
+      component={HomeScreen} 
+      options={{ 
+        headerShown: false,
+        headerTitleStyle: { flex: 1 },
+       }}
+      />
       <StackHome.Screen name="Home2" component={HomeScreen2} />
     </StackHome.Navigator>
   );
