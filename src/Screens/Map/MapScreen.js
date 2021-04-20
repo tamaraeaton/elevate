@@ -5,8 +5,8 @@ import LocationDisplay from '../../components/showLocationComponent'
 const MapScreen = () => {
   return (
     <>
-    <MapComponent/>
     <LocationDisplay/>
+    <MapComponent/>
     </>
   );
 };
