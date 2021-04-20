@@ -18,19 +18,20 @@ import Geolocation from 'react-native-geolocation-service';
 const LocationDisplay = () => {
 
   
-  const [currentLongitude, setCurrentLongitude] = useState('...');
-  const [currentLatitude, setCurrentLatitude] = useState('...');
+  const [currentLongitude, setCurrentLongitude] = useState(0);
+  const [currentLatitude, setCurrentLatitude] = useState(0);
   const [locationStatus, setLocationStatus] = useState('');
-  const [currentAltitude, setCurrentAltitude] = useState('...')
-  const [currentElevation, setCurrentElevation] = useState('...')
+  const [currentAltitude, setCurrentAltitude] = useState(0)
+  const [currentElevation, setCurrentElevation] = useState(0)
 
   useEffect( async () => {
-  const res = await fetch(`https://maps.googleapis.com/maps/api/elevation/json?locations=${currentLongitude},${currentLatitude}&key=AIzaSyD3pCgrdlCaWjT_AIe13jaeKf4zfpGK8R4`);
-  const data = await res.json()
-  const currentElevation = JSON.stringify(data.results[0].elevation);
+    console.log(currentLongitude)
+    console.log(currentLatitude)
+    const res = await fetch(`https://maps.googleapis.com/maps/api/elevation/json?locations=${currentLongitude},${currentLatitude}&key=AIzaSyD3pCgrdlCaWjT_AIe13jaeKf4zfpGK8R4`);
+    const data = await res.json()
+    const currentElevation = JSON.stringify(data.results[0].elevation);
     setCurrentElevation(currentElevation);
-    console.log(currentElevation)
-
+    
 }, []);
 
 
