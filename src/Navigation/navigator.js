@@ -6,12 +6,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 //Import Screens------------------------------------
 import HomeScreen from '../Screens/Home/HomeScreen';
-import HomeScreen2 from '../Screens/Home/HomeScreen2';
 import MapScreen from '../Screens/Map/MapScreen';
 import InfoScreen from '../Screens/Info/InfoScreen';
 // import { HomeStack, InfoStack, MapStack } from './index'
 //Set Stacks-----------------------------------
-const image = require('../../assets/elevate-logo.png')
 
 const Tab = createBottomTabNavigator();
 const StackHome = createStackNavigator();
@@ -26,7 +24,6 @@ function HomeStack() {
         headerTitleStyle: { flex: 1 },
        }}
       />
-      <StackHome.Screen name="Home2" component={HomeScreen2} />
     </StackHome.Navigator>
   );
 }
