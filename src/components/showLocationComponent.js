@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 
 // import all the components we are going to use
@@ -23,11 +24,29 @@ const LocationDisplay = () => {
   const [locationStatus, setLocationStatus] = useState('');
   const [currentAltitude, setCurrentAltitude] = useState(0)
   const [currentElevation, setCurrentElevation] = useState(0)
+ const [latLang, setLatLang] = useState([currentLongitude,currentLatitude])
+
+  // function getElevation() {
+  //   var latLong = dfg;
+
+  //   axios.get('https://maps.googleapis.com/maps/api/elevation/json',{
+  //     params:{
+  //       locations: 22,
+  //       key: 'AIzaSyD3pCgrdlCaWjT_AIe13jaeKf4zfpGK8R4'
+  //     }
+  //   })
+
+  // }
+
+
+
+
+
 
   useEffect( async () => {
     console.log(currentLongitude)
     console.log(currentLatitude)
-    const res = await fetch(`https://maps.googleapis.com/maps/api/elevation/json?locations=${currentLongitude},${currentLatitude}&key=AIzaSyD3pCgrdlCaWjT_AIe13jaeKf4zfpGK8R4`);
+    const res = await fetch(`https://maps.googleapis.com/maps/api/elevation/json?locations=${currentLongitude},95&key=AIzaSyD3pCgrdlCaWjT_AIe13jaeKf4zfpGK8R4`);
     const data = await res.json()
     const currentElevation = JSON.stringify(data.results[0].elevation);
     setCurrentElevation(currentElevation);
