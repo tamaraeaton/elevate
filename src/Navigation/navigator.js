@@ -6,7 +6,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 //Import Screens------------------------------------
 import HomeScreen from '../Screens/Home/HomeScreen';
-import HomeScreen2 from '../Screens/Home/HomeScreen2';
 import MapScreen from '../Screens/Map/MapScreen';
 import InfoScreen from '../Screens/Info/InfoScreen';
 // import { HomeStack, InfoStack, MapStack } from './index'
@@ -17,8 +16,14 @@ const StackHome = createStackNavigator();
 function HomeStack() {
   return (
     <StackHome.Navigator initialRouteName="Home">
-      <StackHome.Screen name="Home" component={HomeScreen} />
-      <StackHome.Screen name="Home2" component={HomeScreen2} />
+      <StackHome.Screen 
+      name="Home" 
+      component={HomeScreen} 
+      options={{ 
+        headerShown: false,
+        headerTitleStyle: { flex: 1 },
+       }}
+      />
     </StackHome.Navigator>
   );
 }
