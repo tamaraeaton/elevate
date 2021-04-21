@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 
 // import all the components we are going to use
@@ -16,13 +17,47 @@ import {
 import Geolocation from 'react-native-geolocation-service';
 
 const LocationDisplay = () => {
-  const [currentLongitude, setCurrentLongitude] = useState('...');
-  const [currentLatitude, setCurrentLatitude] = useState('...');
+
+  
+  const [currentLongitude, setCurrentLongitude] = useState(0);
+  const [currentLatitude, setCurrentLatitude] = useState(0);
   const [locationStatus, setLocationStatus] = useState('');
+  const [currentAltitude, setCurrentAltitude] = useState(0)
+  const [currentElevation, setCurrentElevation] = useState(0)
+ const [latLang, setLatLang] = useState([currentLongitude,currentLatitude])
+
+  // function getElevation() {
+  //   var latLong = dfg;
+
+  //   axios.get('https://maps.googleapis.com/maps/api/elevation/json',{
+  //     params:{
+  //       locations: 22,
+  //       key: 'AIzaSyD3pCgrdlCaWjT_AIe13jaeKf4zfpGK8R4'
+  //     }
+  //   })
+
+  // }
+
+
+
+
+
+
+  useEffect( async () => {
+    console.log(currentLongitude)
+    console.log(currentLatitude)
+    const res = await fetch(`https://maps.googleapis.com/maps/api/elevation/json?locations=${currentLongitude},95&key=AIzaSyD3pCgrdlCaWjT_AIe13jaeKf4zfpGK8R4`);
+    const data = await res.json()
+    const currentElevation = JSON.stringify(data.results[0].elevation);
+    setCurrentElevation(currentElevation);
+    
+}, []);
+
+
 
   useEffect(() => {
     const requestLocationPermission = async () => {
-      if (Platform.OS === 'ios') {
+      if (Platform.OS === 'android') {
         getOneTimeLocation();
         subscribeLocationLocation();
       } else {
@@ -62,12 +97,14 @@ const LocationDisplay = () => {
         //getting the Longitude from the location json
         const currentLongitude = JSON.stringify(position.coords.longitude);
 
+        const currentAltitude = JSON.stringify(position.coords.altitude);
+
         //getting the Latitude from the location json
         const currentLatitude = JSON.stringify(position.coords.latitude);
 
         //Setting Longitude state
         setCurrentLongitude(currentLongitude);
-
+        setCurrentAltitude(currentAltitude);
         //Setting Longitude state
         setCurrentLatitude(currentLatitude);
       },
@@ -95,9 +132,11 @@ const LocationDisplay = () => {
 
         //getting the Latitude from the location json
         const currentLatitude = JSON.stringify(position.coords.latitude);
+        const currentAltitude = JSON.stringify(position.coords.altitude);
 
         //Setting Longitude state
         setCurrentLongitude(currentLongitude);
+        setCurrentAltitude(currentAltitude);
 
         //Setting Latitude state
         setCurrentLatitude(currentLatitude);
@@ -113,16 +152,29 @@ const LocationDisplay = () => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
+    <SafeAreaView >
+      <View style={styles.elevation}>
+        <Text
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            
+              color: 'green',
+              fontSize: 16,
+            }}>
+            Elevation: {currentElevation}
+            
+          </Text>
+        </View>
+      <View>
         <View style={styles.container}>
-          <Image
+          {/* <Image
             source={{
               uri:
                 'https://raw.githubusercontent.com/AboutReact/sampleresource/master/location.png',
             }}
-            style={{width: 60, height: 60}}
-          />
+            style={{width: 30, height: 30}}
+          /> */}
           {/* <Text style={styles.boldText}>
             {locationStatus}
           </Text> */}
@@ -130,9 +182,9 @@ const LocationDisplay = () => {
             style={{
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: 16,
+              marginTop: 5,
               color: 'red',
-              fontSize: 20,
+              fontSize: 16,
             }}>
             Longitude: {currentLongitude}
           </Text>
@@ -140,26 +192,42 @@ const LocationDisplay = () => {
             style={{
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: 16,
+              marginTop: 5,
               color: 'green',
-              fontSize: 20,
+              fontSize: 16,
             }}>
             Latitude: {currentLatitude}
+            
           </Text>
+          <Text
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 5,
+              color: 'green',
+              fontSize: 16,
+            }}>
+            Altitude: {currentAltitude}
+            
+          </Text>
+        
           <View style={{marginTop: 20}}>
             <Button title="Current Location" onPress={getOneTimeLocation} />
           </View>
+          
         </View>
       </View>
+      
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    position: 'relative',
-    top: 230,
-
+    
+    // position: 'relative',
+    // top: 200,
+    backgroundColor: 'lightgray',
     padding: 10,
     alignItems: 'center',
     justifyContent: 'center',
@@ -167,6 +235,15 @@ const styles = StyleSheet.create({
   boldText: {
     marginVertical: 16,
   },
+  elevation: {
+    position: 'relative',
+    
+    borderBottomWidth:3,
+    backgroundColor:'red',
+    borderRadius: 15,
+    margin:5
+    
+  }
 });
 
 export default LocationDisplay;

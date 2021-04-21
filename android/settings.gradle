@@ -1,4 +1,6 @@
 rootProject.name = 'practiceMap'
+include ':react-native-geolocation-service'
+project(':react-native-geolocation-service').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-geolocation-service/android')
 include ':react-native-safe-area-context'
 project(':react-native-safe-area-context').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-safe-area-context/android')
 include ':react-native-screens'
