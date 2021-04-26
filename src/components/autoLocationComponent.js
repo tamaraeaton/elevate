@@ -68,8 +68,82 @@ const styles = StyleSheet.create({
     }
 })
 
+// import React, {useState, useEffect} from 'react';
+// import {TextInput, StyleSheet, View,Text, TouchableOpacity} from 'react-native'
+// import axios from 'axios';
+// import _ from 'lodash';
 
 
+// const PlaceInput = () => {
+// const [input, setInput] = useState("");
+// const [predictions, setPredictions] = useState([]);
+// const [destinationInput, setDestinationInput] = useState("")
 
+//    const getPlaces = async (input) => {
+//        try {
+//         const result = await axios.get(
+//             `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyD3pCgrdlCaWjT_AIe13jaeKf4zfpGK8R4&input=${input}`
+//         );
+//         setPredictions(result.data.predictions)
+//         console.log(result.data) 
+//        } catch (error) {
+           
+//        }
+//    }
+//    const  setDestination =(main_text) =>{
+//     setDestinationInput( main_text)
+// }
+
+// const predict = predictions.map(prediction => {
+//     return(
+//     <TouchableOpacity key={prediction.id} onPress={() => setDestination(prediction.structured_formatting.main_text)}>
+//          <View style={styles.suggestions}>
+//          <Text>{prediction.structured_formatting.main_text}</Text>
+//          <Text style={styles.secondary}>{prediction.structured_formatting.secondary_text}</Text>
+//      </View>
+//     </TouchableOpacity>
+//      )
+//  })
+
+// useEffect(()=> {
+// getPlaces();
+// setDestination();
+
+// },[])
+
+//     return(
+//         <View >
+//         <TextInput
+//         value={destinationInput}
+//         autoCorrect= {false}
+//         autoCapitalize="none"
+//         style={styles.input}
+//         placeholder= 'where to...'
+//         onChangeText={input => {
+//             setDestinationInput(input)
+//             }
+//         }
+//     />
+//     {predict}
+//    </View>
+//     )
+// }
+// const styles = StyleSheet.create({
+//     input: {
+//         height: 40,
+//         backgroundColor: 'white',
+//     },
+//     suggestions: {
+//         backgroundColor: 'white',
+//         padding: 15,
+//         borderTopWidth: 0.5,
+//         borderColor: 'gray'
+//     },
+//     secondary: {
+//         color: 'gray'
+//     }
+// })
+
+// export default PlaceInput;
 
 
