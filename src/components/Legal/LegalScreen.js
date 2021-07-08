@@ -12,7 +12,7 @@ const Legal = () => {
       <Text style={styles.agreementTitle}>User Agreement:</Text>
       <Text style={styles.agreementText}>
         We have the right to suspend or delete the accounts of abusive users who
-        violat this app's terms and conditions. Prohibited activies could
+        violate this app's terms and conditions. Prohibited activies could
         include copyright infringement, spamming other users, and general misuse
         of your app.
       </Text>
@@ -21,25 +21,25 @@ const Legal = () => {
 };
 
 const styles = StyleSheet.create({
-    legalView: {
-        margin: 25
-    },
-    disclaimerTitle: {
-        fontWeight: 'bold',
-        fontSize: 20
+  legalView: {
+    margin: 25,
   },
-    disclaimerText: {
-        fontSize: 20,
-        margin: 15
-    },
-    agreementTitle: {
-        fontWeight: 'bold',
-        fontSize: 20
+  disclaimerTitle: {
+    fontWeight: 'bold',
+    fontSize: 20,
   },
-    agreementText: {
-        fontSize: 20,
-        margin: 15
-    }
+  disclaimerText: {
+    fontSize: 20,
+    margin: 15,
+  },
+  agreementTitle: {
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+  agreementText: {
+    fontSize: 20,
+    margin: 15,
+  },
 });
 
 export default Legal;
