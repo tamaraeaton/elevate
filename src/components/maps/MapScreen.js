@@ -34,7 +34,6 @@ export default class MapScreen extends React.Component {
             userLat: pos.coords.latitude,
             userLon: pos.coords.longitude,
             userLocation: pos,
-            
           });
       },
       error => {
@@ -106,48 +105,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-// import React, {Component} from 'react';
-// import {View, StyleSheet} from 'react-native';
-// import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
-
-// export default class MapScreen extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       userLatitude: 0,
-//       userLongitude: 0,
-//     };
-//   }
-
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <MapView
-//           showsUserLocation
-//           followsUserLocation
-//           provider={PROVIDER_GOOGLE}
-//           style={styles.map}
-//           region={{
-//             latitude: 37.78825,
-//             longitude: -122.4324,
-//             latitudeDelta: 0.015,
-//             longitudeDelta: 0.0121,
-//           }}
-//         />
-//       </View>
-//     );
-//   }
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     ...StyleSheet.absoluteFillObject,
-//     flex: 1,
-//     justifyContent: 'flex-end',
-//     alignItems: 'center',
-//   },
-//   map: {
-//     ...StyleSheet.absoluteFillObject,
-//   },
-// });
