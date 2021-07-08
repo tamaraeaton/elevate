@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {ImageBackground, Text, StyleSheet} from 'react-native';
 
 const Legal = () => {
   return (
-    <View style={styles.legalView}>
+    <ImageBackground source={require('./backgroundLegal.jpg')} style={styles.legalImageBackground}>
       <Text style={styles.disclaimerTitle}>Disclaimer:</Text>
       <Text style={styles.disclaimerText}>
         The measurements are as close to correct as possible, although the
@@ -16,13 +16,13 @@ const Legal = () => {
         include copyright infringement, spamming other users, and general misuse
         of your app.
       </Text>
-    </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  legalView: {
-    margin: 25,
+  legalImageBackground: {
+    margin: 0,
   },
   disclaimerTitle: {
     fontWeight: 'bold',
