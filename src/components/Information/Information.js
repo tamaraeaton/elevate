@@ -28,7 +28,8 @@ const Information = () => {
 
 const styles = StyleSheet.create({
   InspirationView: {
-    margin: 25,
+      padding: 15,
+      height: 1000,
   },
   ElevateTitle: {
     fontWeight: 'bold',
