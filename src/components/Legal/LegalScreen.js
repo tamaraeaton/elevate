@@ -23,22 +23,25 @@ const Legal = () => {
 const styles = StyleSheet.create({
   legalImageBackground: {
     margin: 0,
+    height: 800
   },
   disclaimerTitle: {
     fontWeight: 'bold',
     fontSize: 20,
+    margin: 10
   },
   disclaimerText: {
     fontSize: 20,
-    margin: 15,
+    margin: 20,
   },
   agreementTitle: {
     fontWeight: 'bold',
     fontSize: 20,
+    margin: 10
   },
   agreementText: {
     fontSize: 20,
-    margin: 15,
+    margin: 20,
   },
 });
 
