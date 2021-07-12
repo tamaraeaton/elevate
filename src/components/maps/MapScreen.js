@@ -45,7 +45,7 @@ export default class MapScreen extends React.Component {
           userLocationCalloutEnabled={true}
           provider={'google'}
           showsCompass={true}
-          mapType="terrain"
+          mapType="satellite"
           region={{
             latitude: this.state.userLat,
             longitude: this.state.userLong,
