@@ -61,7 +61,7 @@ function Nav() {
             }
             if (route.name === 'Legal') {
               iconName = focused
-                ? require('../../assets/placeholder.png')
+                ? require('../../assets/balanceScale.png')
                 : require('../../assets/placeholder.png');
             }
             if (route.name === 'Info') {

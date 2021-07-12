@@ -43,6 +43,7 @@ export default class MapScreen extends React.Component {
           style={styles.map}
           showsUserLocation={true}
           userLocationCalloutEnabled={true}
+          scrollDuringRotateOrZoomEnabled={true}
           provider={'google'}
           showsCompass={true}
           mapType="terrain"
