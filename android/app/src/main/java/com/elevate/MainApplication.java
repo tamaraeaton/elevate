@@ -2,17 +2,16 @@ package com.elevate;
 
 import android.app.Application;
 import android.content.Context;
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
-import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
