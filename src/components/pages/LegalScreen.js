@@ -1,43 +1,49 @@
-import * as React from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
+import React from 'react';
+import {ImageBackground, Text, StyleSheet} from 'react-native';
 
-const InstructionsScreen = () => {
+const LegalScreen = () => {
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={{flex: 1, padding: 16}}>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text
-            style={{
-              fontSize: 25,
-              textAlign: 'center',
-              marginBottom: 16,
-            }}>
-            You are on Instructions Screen
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontSize: 18,
-            textAlign: 'center',
-            color: 'grey',
-          }}>
-          React Native Bottom Navigation
-        </Text>
-        <Text
-          style={{
-            fontSize: 16,
-            textAlign: 'center',
-            color: 'grey',
-          }}>
-          www.aboutreact.com
-        </Text>
-      </View>
-    </SafeAreaView>
+    <ImageBackground source={require('../../assets/backgroundLegal.jpg')} style={styles.legalImageBackground}>
+      <Text style={styles.disclaimerTitle}>Disclaimer:</Text>
+      <Text style={styles.disclaimerText}>
+        The measurements are as close to correct as possible, although the
+        measurements could slightly be off.
+      </Text>
+      <Text style={styles.agreementTitle}>User Agreement:</Text>
+      <Text style={styles.agreementText}>
+        We have the right to suspend or delete the accounts of abusive users who
+        violate this app's terms and conditions. Prohibited activies could
+        include copyright infringement, spamming other users, and general misuse
+        of your app.
+      </Text>
+    </ImageBackground>
   );
 };
-export default InstructionsScreen;
+
+const styles = StyleSheet.create({
+  legalImageBackground: {
+    margin: 0,
+    height: 800
+  },
+  disclaimerTitle: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    margin: 10
+  },
+  disclaimerText: {
+    fontSize: 20,
+    margin: 20,
+  },
+  agreementTitle: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    margin: 10
+  },
+  agreementText: {
+    fontSize: 20,
+    margin: 20,
+  },
+});
+
+export default LegalScreen;
+
