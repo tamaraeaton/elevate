@@ -15,9 +15,9 @@ const Tab = createBottomTabNavigator();
 const StackHome = createStackNavigator();
 function HomeStack() {
   return (
-    <StackHome.Navigator initialRouteName="Home">
+    <StackHome.Navigator initialRouteName="Map">
       <StackHome.Screen
-        name="Home"
+        name="Map"
         component={HomeScreen}
         options={{
           headerShown: false,
@@ -54,20 +54,20 @@ function Nav() {
           tabBarIcon: ({focused, color, size}) => {
             let iconName;
             //Add new Bottom-tabs here-------------------------
-            if (route.name === 'Home') {
-              iconName = focused
-                ? require('../../assets/home.png')
-                : require('../../assets/map.png');
-            }
             if (route.name === 'Legal') {
               iconName = focused
                 ? require('../../assets/balanceScale.png')
-                : require('../../assets/placeholder.png');
+                : require('../../assets/balanceScale.png');
+            }
+            if (route.name === 'Map') {
+              iconName = focused
+                ? require('../../assets/map.png')
+                : require('../../assets/map.png');
             }
             if (route.name === 'Info') {
               iconName = focused
-                ? require('../../assets/user.png')
-                : require('../../assets/user.png');
+                ? require('../../assets/info.png')
+                : require('../../assets/info.png');
             }
             // You can return any component that you like here!
             return (
@@ -83,9 +83,9 @@ function Nav() {
           activeTintColor: 'red',
           inactiveTintColor: 'green',
         }}>
-        <Tab.Screen name="Home" component={HomeStack} />
-        <Tab.Screen name="Legal" component={LegalStack} />
         <Tab.Screen name="Info" component={InfoStack} />
+        <Tab.Screen name="Map" component={HomeStack} />
+        <Tab.Screen name="Legal" component={LegalStack} />
       </Tab.Navigator>
     </NavigationContainer>
   );
