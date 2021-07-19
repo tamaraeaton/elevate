@@ -15,7 +15,7 @@ export default class MapScreen extends React.Component {
       markerLat: 0,
       markerLon: 0,
       marker: null,
-    };
+    }
   }
 
   componentDidMount() {
@@ -41,25 +41,29 @@ export default class MapScreen extends React.Component {
         <Text style={styles.blueTitle}>ELEVATE</Text>
         <MapView
           style={styles.map}
+          moveOnMarkerPress={true}
           showsUserLocation={true}
-          userLocationCalloutEnabled={true}
-          scrollDuringRotateOrZoomEnabled={true}
+          userLocationCalloutEnabled={true} 
+          // scrollDuringRotateOrZoomEnabled={false}
           provider={'google'}
           showsCompass={true}
           mapType="satellite"
-          region={{
+          initialRegion={{
             latitude: this.state.userLat,
             longitude: this.state.userLong,
             latitudeDelta: 0.015,
             longitudeDelta: 0.0121,
           }}
-          onPress={e =>
+          onPress={e => {
             this.setState({
               markerLat: e.nativeEvent.coordinate.latitude,
               markerLon: e.nativeEvent.coordinate.longitude,
               marker: e.nativeEvent.coordinate,
-            })
-          }>
+              
+            });
+          }}
+  
+          >
           <Marker
             key={1}
             coordinate={{
@@ -72,7 +76,18 @@ export default class MapScreen extends React.Component {
             </Callout>
           </Marker>
           {this.state.marker && (
-            <Marker coordinate={this.state.marker} pinColor={'gold'}></Marker>
+            <Marker key={2} 
+            coordinate={{
+              latitude: this.state.markerLat,
+              longitude: this.state.markerLon,
+              latitudeDelta: 0.015,
+              longitudeDelta: 0.0121,
+            }} pinColor={'gold'}>
+              <Callout>
+                <Text>Lat: {this.state.markerLat}</Text>
+                <Text>lon: {this.state.markerLon}</Text>
+              </Callout>
+            </Marker>
           )}
         </MapView>
         <View style={styles.elevateButtonSection}>
@@ -89,6 +104,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
+    zIndex: -1
   },
   map: {
     height: 600,
