@@ -1,38 +1,136 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, Button} from 'react-native';
-import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  Dimensions,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import MapView, {
+  Callout,
+  Marker,
+  MAP_TYPES,
+  PROVIDER_GOOGLE,
+} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 
+const {width, height} = Dimensions.get('window');
+const ASPECT_RATIO = width / height;
+
+let location = 0;
+const LATITUDE_DELTA = 0.0922;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 export default class MapScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: true,
+      latitude: 0,
+      longitude: 0,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA,
       userLat: 0,
       userLong: 0,
-      userElevation: 0,
-      latitudeDelta: 0.015,
-      longitudeDelta: 0.0121,
+      userElevation: null,
+      desElevation: null,
       markerLat: 0,
       markerLon: 0,
       marker: null,
     };
+    this.fetchUserElevation = this.fetchUserElevation.bind(this);
+    this.fetchMarkerElevation = this.fetchMarkerElevation.bind(this);
   }
 
-  componentDidMount() {
-    Geolocation.getCurrentPosition(
-      pos => {
-        console.log(pos),
+  async fetchMarkerElevation() {
+    let location = this.state.markerLat + ',' + this.state.markerLon;
+    return await fetch(
+      `https://maps.googleapis.com/maps/api/elevation/json?locations=${location}&key=AIzaSyBzwGuLqOzIr4UaZGXj1YqTmEoL1hdPk6s`,
+    )
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log(responseJson.results[0].elevation),
           this.setState({
-            userLat: pos.coords.latitude,
-            userLong: pos.coords.longitude,
-            // userLocation: [pos.coords.latitude, pos.coords.longitude],
+            isLoading: false,
+            desElevation: responseJson.results[0].elevation,
           });
+        Alert.alert(
+          'The Marker Elevation is ' +
+            responseJson.results[0].elevation +
+            ' meters!',
+        );
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+  getUserPosition() {
+    this.locationWatchId = Geolocation.watchPosition(
+      pos => {
+        console.log(pos);
+        this.setState({
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+          userLat: pos.coords.latitude,
+          userLon: pos.coords.longitude,
+        });
       },
-      error => {
-        console.log(error.code, error.message);
+      err => console.warn(err),
+      {
+        enableHighAccuracy: true,
       },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
+  }
+
+  componentWillUnmount() {
+    Geolocation.clearWatch(this.locationWatchId);
+  }
+
+  // async fetchUserElevation() {
+  //   location = this.state.userLat + ',' + this.state.userLon;
+  //   return await fetch(
+  //     `https://maps.googleapis.com/maps/api/elevation/json?locations=${location}&key=AIzaSyBzwGuLqOzIr4UaZGXj1YqTmEoL1hdPk6s`,
+  //   )
+  //     .then(response => response.json())
+  //     .then(responseJson => {
+  //       console.log(responseJson.results[0].elevation);
+  //       if (responseJson.status === 'OK') {
+  //         console.log(responseJson.results[0].elevation);
+  //         this.setState({userElevation: responseJson.results[0].elevation});
+  //         Alert.alert(
+  //           'Your current Elevation is ' +
+  //             responseJson.results[0].elevation +
+  //             ' meters!',
+  //         );
+  //       } else {
+  //         console.log(responseJson.status);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //     });
+  // }
+
+  async componentDidMount() {
+    this.getUserPosition();
+  }
+  _getElevationDifference() {
+    let elevationOne = this.state.userElevation;
+    let elevationTwo = this.state.desElevation;
+    let difference = elevationOne - elevationTwo;
+    console.log(difference);
+    if (difference != 0) {
+      this.setState({
+        elevationDifference: difference,
+      });
+      Alert.alert('The elevation Difference is ' + difference + ' meters!');
+    } else {
+      this.setState({
+        elevationDifference: 0,
+      });
+    }
+    console.log(this.state.elevationDifference);
   }
 
   render() {
@@ -40,19 +138,30 @@ export default class MapScreen extends React.Component {
       <View style={styles.container}>
         <Text style={styles.blueTitle}>ELEVATE</Text>
         <MapView
-          style={styles.map}
-          showsUserLocation={true}
-          userLocationCalloutEnabled={true}
-          scrollDuringRotateOrZoomEnabled={true}
-          provider={'google'}
-          showsCompass={true}
-          mapType="satellite"
-          region={{
-            latitude: this.state.userLat,
-            longitude: this.state.userLong,
-            latitudeDelta: 0.015,
-            longitudeDelta: 0.0121,
+          provider={PROVIDER_GOOGLE}
+          ref={ref => {
+            this.map = ref;
           }}
+          style={styles.map}
+          initialRegion={{
+            latitude: this.state.latitude,
+            longitude: this.state.longitude,
+            latitudeDelta: this.state.latitudeDelta,
+            longitudeDelta: this.state.longitudeDelta,
+          }}
+          mapType={'terrain'}
+          showsUserLocation={true}
+          showsMyLocationButton={true}
+          followsUserLocation={true}
+          userLocationPriority={'high'}
+          userLocationCalloutEnabled={true}
+          loadingIndicatorColor={'red'}
+          userLocationCalloutEnabled={true}
+          minZoomLevel={3}
+          maxZoomLevel={15}
+          loadingEnabled={true}
+          loadingBackgroundColor={'blue'}
+          showsCompass={true}
           onPress={e =>
             this.setState({
               markerLat: e.nativeEvent.coordinate.latitude,
@@ -60,24 +169,43 @@ export default class MapScreen extends React.Component {
               marker: e.nativeEvent.coordinate,
             })
           }>
-          <Marker
-            key={1}
+          <MapView.Marker
+            onPress={() => this.fetchUserElevation()}
+            key={key}
             coordinate={{
               latitude: this.state.userLat,
-              longitude: this.state.userLong,
+              longitude: this.state.userLon,
+              latitudeDelta: this.state.latitudeDelta,
+              longitudeDelta: this.state.longitudeDelta,
             }}>
-            <Callout>
+            <Callout tooltip onPress={this.fetchUserElevation()}>
               <Text>Lat: {this.state.userLat}</Text>
               <Text>lon: {this.state.userLong}</Text>
             </Callout>
-          </Marker>
+          </MapView.Marker>
           {this.state.marker && (
-            <Marker coordinate={this.state.marker} pinColor={'gold'}></Marker>
+            <Marker
+              id={2}
+              // onMarkerSelect={this.fetchMarkerElevation()}
+              coordinate={{
+                latitude: this.state.markerLat,
+                longitude: this.state.markerLon,
+                latitudeDelta: this.state.latitudeDelta,
+                longitudeDelta: this.state.longitudeDelta,
+              }}
+              pinColor={'gold'}>
+              <Callout tooltip onPress={this.fetchMarkerlevation()}>
+                <Text>Lat: {this.state.markerLat}</Text>
+                <Text>lon: {this.state.markerLon}</Text>
+              </Callout>
+            </Marker>
           )}
         </MapView>
-        <View style={styles.elevateButtonSection}>
-          <Button title="Elevation Difference" />
-        </View>
+        <TouchableOpacity
+          onPress={() => this._getElevationDifference()}
+          style={[styles.bubble, styles.button]}>
+          <Text style={styles.buttonText}>Get Elevation Difference</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -96,7 +224,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
-
+  buttonText: {
+    textAlign: 'center',
+  },
   blueTitle: {
     color: 'aqua',
     fontWeight: 'bold',
@@ -104,9 +234,18 @@ const styles = StyleSheet.create({
     marginLeft: 120,
     height: 35,
   },
+  bubble: {
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    borderRadius: 20,
+  },
   button: {
-    backgroundColor: 'blue',
-    color: 'white',
+    width: 100,
+    paddingHorizontal: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 5,
   },
   elevateButtonSection: {
     width: '100%',
