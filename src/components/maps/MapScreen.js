@@ -1,60 +1,66 @@
-import React, {Component} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Button,
-  Dimensions,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
-import MapView, {
-  Callout,
-  Marker,
-  MAP_TYPES,
-  PROVIDER_GOOGLE,
-} from 'react-native-maps';
+import React from 'react';
+import {StyleSheet, View, Alert, Text, TouchableOpacity} from 'react-native';
+import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 
-const {width, height} = Dimensions.get('window');
-const ASPECT_RATIO = width / height;
-
-let location = 0;
-const LATITUDE_DELTA = 0.0922;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-export default class MapScreen extends React.Component {
+export default class ElevationMap extends React.Component {
   constructor(props) {
     super(props);
+    this.onMarkerCalloutPress = this.onMarkerCalloutPress.bind(this);
+    this.onUserLocationMarkerCalloutPress = this.onUserLocationMarkerCalloutPress.bind(
+      this,
+    );
+    this.getElevationDifference = this.getElevationDifference.bind(this);
     this.state = {
-      isLoading: true,
-      latitude: 0,
-      longitude: 0,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA,
-      userLat: 0,
-      userLong: 0,
-      userElevation: null,
-      desElevation: null,
       markerLat: 0,
       markerLon: 0,
+      userLatitude: 0,
+      userLongitude: 0,
+      userElevation: 0,
+      latitudeDelta: 0.1,
+      longitudeDelta: 0.1,
+      eleCoordinates: 0,
+      markerElevation: 0,
       marker: null,
+      elevationDifference: 0,
     };
-    this.fetchUserElevation = this.fetchUserElevation.bind(this);
-    this.fetchMarkerElevation = this.fetchMarkerElevation.bind(this);
   }
 
-  async fetchMarkerElevation() {
-    let location = this.state.markerLat + ',' + this.state.markerLon;
+  onUserLocationMarkerCalloutPress = async () => {
+    let userElevateCoordinates =
+      this.state.userLatitude + ',' + this.state.userLongitude;
+    let userElevationCoordinates = userElevateCoordinates.toString();
     return await fetch(
-      `https://maps.googleapis.com/maps/api/elevation/json?locations=${location}&key=AIzaSyBzwGuLqOzIr4UaZGXj1YqTmEoL1hdPk6s`,
+      `https://maps.googleapis.com/maps/api/elevation/json?locations=${userElevationCoordinates}&key=AIzaSyAC0rfEw46oQI8o22_X-ZSFCrIzPF-BZlk`,
     )
       .then(response => response.json())
       .then(responseJson => {
         console.log(responseJson.results[0].elevation),
-          this.setState({
-            isLoading: false,
-            desElevation: responseJson.results[0].elevation,
-          });
+          this.setState({userElevation: responseJson.results[0].elevation});
+        Alert.alert(
+          'Your current Elevation is ' +
+            responseJson.results[0].elevation +
+            ' meters!',
+        );
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+  componentDidMount = () => {
+    this.getUserPosition();
+  };
+
+  onMarkerCalloutPress = async () => {
+    let elevateCoordinates = this.state.markerLat + ',' + this.state.markerLon;
+    let elevationCoordinates = elevateCoordinates.toString();
+    return await fetch(
+      `https://maps.googleapis.com/maps/api/elevation/json?locations=${elevationCoordinates}&key=AIzaSyAC0rfEw46oQI8o22_X-ZSFCrIzPF-BZlk`,
+    )
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log(responseJson.results[0].elevation),
+          this.setState({markerElevation: responseJson.results[0].elevation});
         Alert.alert(
           'The Marker Elevation is ' +
             responseJson.results[0].elevation +
@@ -64,7 +70,7 @@ export default class MapScreen extends React.Component {
       .catch(error => {
         console.error(error);
       });
-  }
+  };
   getUserPosition() {
     this.locationWatchId = Geolocation.watchPosition(
       pos => {
@@ -82,86 +88,60 @@ export default class MapScreen extends React.Component {
       },
     );
   }
-
   componentWillUnmount() {
     Geolocation.clearWatch(this.locationWatchId);
   }
+  // componentDidMount() {
+  //     Geolocation.getCurrentPosition(
+  //         pos => {
+  //             this.setState({
+  //                 userLatitude: pos.coords.latitude,
+  //                 userLongitude: pos.coords.longitude,
+  //             });
+  //         },
+  //         (error) => {
 
-  // async fetchUserElevation() {
-  //   location = this.state.userLat + ',' + this.state.userLon;
-  //   return await fetch(
-  //     `https://maps.googleapis.com/maps/api/elevation/json?locations=${location}&key=AIzaSyBzwGuLqOzIr4UaZGXj1YqTmEoL1hdPk6s`,
-  //   )
-  //     .then(response => response.json())
-  //     .then(responseJson => {
-  //       console.log(responseJson.results[0].elevation);
-  //       if (responseJson.status === 'OK') {
-  //         console.log(responseJson.results[0].elevation);
-  //         this.setState({userElevation: responseJson.results[0].elevation});
-  //         Alert.alert(
-  //           'Your current Elevation is ' +
-  //             responseJson.results[0].elevation +
-  //             ' meters!',
-  //         );
-  //       } else {
-  //         console.log(responseJson.status);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error(error);
-  //     });
+  //             console.log(error.code, error.message);
+  //         },
+  //         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+  //     );
   // }
-
-  async componentDidMount() {
-    this.getUserPosition();
-  }
-  _getElevationDifference() {
-    let elevationOne = this.state.userElevation;
-    let elevationTwo = this.state.desElevation;
-    let difference = elevationOne - elevationTwo;
-    console.log(difference);
-    if (difference != 0) {
+  getElevationDifference = () => {
+    if (this.state.userElevation != 0 && this.state.markerElevation != 0) {
+      const difference = this.state.userElevation - this.state.markerElevation;
       this.setState({
         elevationDifference: difference,
       });
-      Alert.alert('The elevation Difference is ' + difference + ' meters!');
     } else {
       this.setState({
         elevationDifference: 0,
       });
     }
-    console.log(this.state.elevationDifference);
-  }
+  };
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.blueTitle}>ELEVATE</Text>
         <MapView
-          provider={PROVIDER_GOOGLE}
-          ref={ref => {
-            this.map = ref;
-          }}
           style={styles.map}
-          initialRegion={{
-            latitude: this.state.latitude,
-            longitude: this.state.longitude,
-            latitudeDelta: this.state.latitudeDelta,
-            longitudeDelta: this.state.longitudeDelta,
-          }}
-          mapType={'terrain'}
+          mapType="terrain"
+          provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
           showsMyLocationButton={true}
           followsUserLocation={true}
-          userLocationPriority={'high'}
-          userLocationCalloutEnabled={true}
           loadingIndicatorColor={'red'}
-          userLocationCalloutEnabled={true}
           minZoomLevel={3}
           maxZoomLevel={15}
           loadingEnabled={true}
           loadingBackgroundColor={'blue'}
           showsCompass={true}
+          pitchEnabled={true}
+          initialRegion={{
+            latitude: this.state.userLatitude,
+            longitude: this.state.userLongitude,
+            latitudeDelta: 0.008,
+            longitudeDelta: 0.008,
+          }}
           onPress={e =>
             this.setState({
               markerLat: e.nativeEvent.coordinate.latitude,
@@ -169,40 +149,34 @@ export default class MapScreen extends React.Component {
               marker: e.nativeEvent.coordinate,
             })
           }>
-          <MapView.Marker
-            onPress={() => this.fetchUserElevation()}
-            key={key}
+          <Marker
+            key={1}
             coordinate={{
-              latitude: this.state.userLat,
-              longitude: this.state.userLon,
-              latitudeDelta: this.state.latitudeDelta,
-              longitudeDelta: this.state.longitudeDelta,
+              latitude: this.state.userLatitude,
+              longitude: this.state.userLongitude,
             }}>
-            <Callout tooltip onPress={this.fetchUserElevation()}>
-              <Text>Lat: {this.state.userLat}</Text>
-              <Text>lon: {this.state.userLong}</Text>
+            <Callout onPress={this.onUserLocationMarkerCalloutPress}>
+              <Text>Lat: {this.state.userLatitude}</Text>
+              <Text>lon: {this.state.userLongitude}</Text>
+              <Text>Elevation:{this.state.userElevation}</Text>
             </Callout>
-          </MapView.Marker>
+          </Marker>
           {this.state.marker && (
             <Marker
-              id={2}
-              // onMarkerSelect={this.fetchMarkerElevation()}
-              coordinate={{
-                latitude: this.state.markerLat,
-                longitude: this.state.markerLon,
-                latitudeDelta: this.state.latitudeDelta,
-                longitudeDelta: this.state.longitudeDelta,
-              }}
-              pinColor={'gold'}>
-              <Callout tooltip onPress={this.fetchMarkerlevation()}>
-                <Text>Lat: {this.state.markerLat}</Text>
-                <Text>lon: {this.state.markerLon}</Text>
+              coordinate={this.state.marker}
+              pinColor={'gold'}
+              onPress={this.onMarkerCalloutPress}>
+              <Callout key={2} onPress={this.getElevationDifference}>
+                <Text>Lat:{this.state.markerLat}</Text>
+                <Text>lon:{this.state.markerLon}</Text>
+                <Text>Elevation:{this.state.markerElevation}</Text>
+                <Text>{this.state.elevationDifference}</Text>
               </Callout>
             </Marker>
           )}
         </MapView>
         <TouchableOpacity
-          onPress={() => this._getElevationDifference()}
+          // onPress={() => }
           style={[styles.bubble, styles.button]}>
           <Text style={styles.buttonText}>Get Elevation Difference</Text>
         </TouchableOpacity>
