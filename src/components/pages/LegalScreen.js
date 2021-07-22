@@ -3,18 +3,18 @@ import {ImageBackground, Text, StyleSheet} from 'react-native';
 
 const LegalScreen = () => {
   return (
-    <ImageBackground source={require('../../assets/backgroundLegal.jpg')} style={styles.legalImageBackground}>
-      <Text style={styles.disclaimerTitle}>Disclaimer:</Text>
-      <Text style={styles.disclaimerText}>
-        The measurements are as close to correct as possible, although the
-        measurements could slightly be off.
+    <ImageBackground
+      source={require('../../assets/backgroundLegal.jpg')}
+      style={styles.legalImageBackground}>
+      <Text style={styles.privacyTitle}>Privacy & Policy:</Text>
+      <Text style={styles.privacyText}>
+        The Elevation app requires you to allow your current location and an
+        internet connection to calculate the elevation between two desired
+        coordinates.
       </Text>
-      <Text style={styles.agreementTitle}>User Agreement:</Text>
-      <Text style={styles.agreementText}>
-        We have the right to suspend or delete the accounts of abusive users who
-        violate this app's terms and conditions. Prohibited activies could
-        include copyright infringement, spamming other users, and general misuse
-        of your app.
+      <Text style={styles.privacyText}>
+        The Elevation app does not collect any identifying or personal data.
+        Your location is not being saved by the app or any of its developers.
       </Text>
     </ImageBackground>
   );
@@ -23,27 +23,17 @@ const LegalScreen = () => {
 const styles = StyleSheet.create({
   legalImageBackground: {
     margin: 0,
-    height: 800
+    height: 800,
   },
-  disclaimerTitle: {
+  privacyTitle: {
     fontWeight: 'bold',
     fontSize: 20,
-    margin: 10
+    margin: 10,
   },
-  disclaimerText: {
-    fontSize: 20,
-    margin: 20,
-  },
-  agreementTitle: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    margin: 10
-  },
-  agreementText: {
+  privacyText: {
     fontSize: 20,
     margin: 20,
   },
 });
 
 export default LegalScreen;
-
