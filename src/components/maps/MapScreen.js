@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Alert, Text, TouchableOpacity} from 'react-native';
 import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-
+import axios from 'axios';
 export default class ElevationMap extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +26,7 @@ export default class ElevationMap extends React.Component {
     };
   }
 
-  onUserLocationMarkerCalloutPress = async () => {
+  onUserLocationMarkerPress = async () => {
     let userElevateCoordinates =
       this.state.userLatitude + ',' + this.state.userLongitude;
     let userElevationCoordinates = userElevateCoordinates.toString();
@@ -51,7 +51,7 @@ export default class ElevationMap extends React.Component {
     this.getUserPosition();
   };
 
-  onMarkerCalloutPress = async () => {
+  onMarkerPress = async () => {
     let elevateCoordinates = this.state.markerLat + ',' + this.state.markerLon;
     let elevationCoordinates = elevateCoordinates.toString();
     return await fetch(
@@ -135,7 +135,6 @@ export default class ElevationMap extends React.Component {
           loadingEnabled={true}
           loadingBackgroundColor={'blue'}
           showsCompass={true}
-          pitchEnabled={true}
           initialRegion={{
             latitude: this.state.userLatitude,
             longitude: this.state.userLongitude,
@@ -155,7 +154,7 @@ export default class ElevationMap extends React.Component {
               latitude: this.state.userLatitude,
               longitude: this.state.userLongitude,
             }}>
-            <Callout onPress={this.onUserLocationMarkerCalloutPress}>
+            <Callout onPress={this.onUserLocationMarkerPress}>
               <Text>Lat: {this.state.userLatitude}</Text>
               <Text>lon: {this.state.userLongitude}</Text>
               <Text>Elevation:{this.state.userElevation}</Text>
@@ -165,7 +164,7 @@ export default class ElevationMap extends React.Component {
             <Marker
               coordinate={this.state.marker}
               pinColor={'gold'}
-              onPress={this.onMarkerCalloutPress}>
+              onPress={this.onMarkerPress}>
               <Callout key={2} onPress={this.getElevationDifference}>
                 <Text>Lat:{this.state.markerLat}</Text>
                 <Text>lon:{this.state.markerLon}</Text>
