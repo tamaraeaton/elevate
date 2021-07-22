@@ -20,7 +20,10 @@ const InfoScreen = () => {
       </Text>
       <Text style={styles.HowToTitle}>How to use Elevate:</Text>
       <Text style={styles.HowToText}>
-        Drag second map marker to desired area on map.
+        The first map marker will be placed automatically where your current
+        location is. The second marker you must click on the map where you are
+        desiring to find the elevation of that location and the difference of
+        elevation between the two desired markers.
       </Text>
     </ImageBackground>
   );
@@ -28,8 +31,8 @@ const InfoScreen = () => {
 
 const styles = StyleSheet.create({
   InspirationView: {
-      padding: 15,
-      height: 1000,
+    padding: 15,
+    height: 1000,
   },
   ElevateTitle: {
     fontWeight: 'bold',
