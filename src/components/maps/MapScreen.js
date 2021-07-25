@@ -51,19 +51,13 @@ export default class MapScreen extends React.Component {
       const responseJson = await response.json();
       console.log('responseJson Line 52', responseJson);
       const currentElevation = responseJson.results[0].elevation;
-      console.log('currentElevation', currentElevation);
-      this.setState({userElevation: currentElevation}, () => console.log(this.state.userElevation));
-      // if (responseJson.status === 'OK') {
-      //   console.log('userele', responseJson.results[0].elevation);
-      //   this.setState({userElevation: currentElevation});
-      // } else {
-      //   console.log(responseJson.status);
-      // }
+      console.log('Line 53, currentElevation1', currentElevation);
+      this.setState({userElevation: currentElevation}, () => console.log('Line 55, userElevation', this.state.userElevation));
     } catch (error) {
-      console.error('1', error);
+      console.error('Line 63 error', error);
     }
-    console.log('return currentElevation Line 65', currentElevation);
-    return currentElevation;
+    console.log('Line 60 return this.state.userElevation', this.state.userElevation);
+    return this.state.userElevation;
   };
   userDestinationMarkerCalloutPress = async () => {
     let markerCoordinates = this.state.markerLat + ',' + this.state.userLon;
@@ -85,18 +79,11 @@ export default class MapScreen extends React.Component {
       this.setState({
         desElevation: destinationElevation,
       });
-      // if (responseJson.status === 'OK') {
-      //   console.log('desele', responseJson.results[0].elevation);
-      //   this.setState({
-      //     destinationElevation: destinationElevation,
-      //   });
-      // } else {
-      //   console.log(responseJson.status);
-      // }
     } catch (error) {
       console.error('2', error);
     }
-    return destinationElevation;
+    console.log('return destinationElevation', this.state.desElevation)
+    return this.state.desElevation;
   };
   getUserPosition() {
     this.locationWatchId = Geolocation.watchPosition(
@@ -126,23 +113,19 @@ export default class MapScreen extends React.Component {
       this.userLocationMarkerCalloutPress();
       this.userDestinationMarkerCalloutPress();
     }
-    console.log('is this current elevation');
-    // this.state.userElevation
-    // destination is here too
     let difference = this.state.userElevation - this.state.desElevation;
-    console.log('difference', difference);
+    console.log('Line 116, difference', difference);
     if (difference != 0) {
       this.setState({
         elevationDifference: difference,
       });
       Alert.alert(
-        'Start elevation: ' +
-          this.state.userElevation +
-          ',' +
-          'destinationElevation: ' +
-          'The elevation Difference is ' +
-          difference +
-          ' meters!',
+        
+          this.state.userElevation + 'and' + this.state.desElevation + 'diff' + this.state.difference
+          // + 
+          // 'The elevation Difference is ' +
+          // difference +
+          // ' meters!',
       );
     } else {
       this.setState({
