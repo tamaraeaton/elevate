@@ -114,14 +114,13 @@ export default class MapScreen extends React.Component {
       this.userDestinationMarkerCalloutPress();
     }
     let difference = this.state.userElevation - this.state.desElevation;
-    console.log('Line 116, difference', difference);
+    console.log('Line 116, difference', difference.toFixed(2));
     if (difference != 0) {
       this.setState({
         elevationDifference: difference,
       });
-      Alert.alert(
-        
-          this.state.userElevation + 'and' + this.state.desElevation + 'diff' + this.state.difference
+      Alert.alert(        
+          this.state.userElevation.toFixed(2) + ' and ' + this.state.desElevation.toFixed(2) + ' diff: ' + difference.toFixed(2)
           // + 
           // 'The elevation Difference is ' +
           // difference +
