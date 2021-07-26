@@ -199,7 +199,6 @@ export default class MapScreen extends React.Component {
                 <Text>Lat: {this.state.markerLat}</Text>
                 <Text>lon: {this.state.markerLon}</Text>
                 <TouchableOpacity style={styles.button}>
-                  <Text style={styles.buttonText}>Get Elevation</Text>
                 </TouchableOpacity>
               </Callout>
             </Marker>
