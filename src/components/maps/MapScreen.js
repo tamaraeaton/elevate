@@ -121,7 +121,7 @@ export default class MapScreen extends React.Component {
       });
       Alert.alert(
         
-          this.state.userElevation + 'and' + this.state.desElevation + 'diff' + this.state.difference
+          this.state.userElevation.toFixed(2) + ' and ' + this.state.desElevation.toFixed(2) + ' diff: ' + difference.toFixed(2)
           // + 
           // 'The elevation Difference is ' +
           // difference +
