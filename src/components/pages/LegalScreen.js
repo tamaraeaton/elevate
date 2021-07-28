@@ -1,43 +1,39 @@
-import * as React from 'react';
-import {View, Text, SafeAreaView} from 'react-native';
+import React from 'react';
+import {ImageBackground, Text, StyleSheet} from 'react-native';
 
-const InstructionsScreen = () => {
+const LegalScreen = () => {
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={{flex: 1, padding: 16}}>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text
-            style={{
-              fontSize: 25,
-              textAlign: 'center',
-              marginBottom: 16,
-            }}>
-            You are on Instructions Screen
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontSize: 18,
-            textAlign: 'center',
-            color: 'grey',
-          }}>
-          React Native Bottom Navigation
-        </Text>
-        <Text
-          style={{
-            fontSize: 16,
-            textAlign: 'center',
-            color: 'grey',
-          }}>
-          www.aboutreact.com
-        </Text>
-      </View>
-    </SafeAreaView>
+    <ImageBackground
+      source={require('../../assets/backgroundLegal.jpg')}
+      style={styles.legalImageBackground}>
+      <Text style={styles.privacyTitle}>Privacy & Policy:</Text>
+      <Text style={styles.privacyText}>
+        The Elevation app requires you to allow your current location and an
+        internet connection to calculate the elevation between two desired
+        coordinates.
+      </Text>
+      <Text style={styles.privacyText}>
+        The Elevation app does not collect any identifying or personal data.
+        Your location is not being saved by the app or any of its developers.
+      </Text>
+    </ImageBackground>
   );
 };
-export default InstructionsScreen;
+
+const styles = StyleSheet.create({
+  legalImageBackground: {
+    margin: 0,
+    height: 800,
+  },
+  privacyTitle: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    margin: 10,
+  },
+  privacyText: {
+    fontSize: 20,
+    margin: 20,
+  },
+});
+
+export default LegalScreen;

@@ -124,16 +124,13 @@ export default class MapScreen extends React.Component {
       this.setState({
         elevationDifference: difference,
       });
+
       Alert.alert(
         this.state.userElevation.toFixed(2) +
           ' and ' +
           this.state.desElevation.toFixed(2) +
           ' diff: ' +
-          difference.toFixed(2),
-        // +
-        // 'The elevation Difference is ' +
-        // difference +
-        // ' meters!',
+          difference.toFixed(2)
       );
     } else {
       this.setState({
@@ -207,7 +204,7 @@ export default class MapScreen extends React.Component {
                 <Text>Lat: {this.state.markerLat}</Text>
                 <Text>Lon: {this.state.markerLon}</Text>
                 <TouchableOpacity style={styles.button}>
-                  <Text style={styles.buttonText}>Get Elevation</Text>
+
                 </TouchableOpacity>
               </Callout>
             </Marker>
