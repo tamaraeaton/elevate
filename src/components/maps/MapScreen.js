@@ -52,11 +52,16 @@ export default class MapScreen extends React.Component {
       console.log('responseJson Line 52', responseJson);
       const currentElevation = responseJson.results[0].elevation;
       console.log('Line 53, currentElevation1', currentElevation);
-      this.setState({userElevation: currentElevation}, () => console.log('Line 55, userElevation', this.state.userElevation));
+      this.setState({userElevation: currentElevation}, () =>
+        console.log('Line 55, userElevation', this.state.userElevation),
+      );
     } catch (error) {
       console.error('Line 63 error', error);
     }
-    console.log('Line 60 return this.state.userElevation', this.state.userElevation);
+    console.log(
+      'Line 60 return this.state.userElevation',
+      this.state.userElevation,
+    );
     return this.state.userElevation;
   };
   userDestinationMarkerCalloutPress = async () => {
@@ -82,7 +87,7 @@ export default class MapScreen extends React.Component {
     } catch (error) {
       console.error('2', error);
     }
-    console.log('return destinationElevation', this.state.desElevation)
+    console.log('return destinationElevation', this.state.desElevation);
     return this.state.desElevation;
   };
   getUserPosition() {
@@ -119,12 +124,16 @@ export default class MapScreen extends React.Component {
       this.setState({
         elevationDifference: difference,
       });
-      Alert.alert(        
-          this.state.userElevation.toFixed(2) + ' and ' + this.state.desElevation.toFixed(2) + ' diff: ' + difference.toFixed(2)
-          // + 
-          // 'The elevation Difference is ' +
-          // difference +
-          // ' meters!',
+      Alert.alert(
+        this.state.userElevation.toFixed(2) +
+          ' and ' +
+          this.state.desElevation.toFixed(2) +
+          ' diff: ' +
+          difference.toFixed(2),
+        // +
+        // 'The elevation Difference is ' +
+        // difference +
+        // ' meters!',
       );
     } else {
       this.setState({
@@ -176,7 +185,7 @@ export default class MapScreen extends React.Component {
             }}>
             <Callout tooltip style={styles.bubble}>
               <Text>Lat: {this.state.userLat}</Text>
-              <Text>lon: {this.state.userLon}</Text>
+              <Text>Lon: {this.state.userLon}</Text>
               {/* <TouchableOpacity
                 style={styles.button}>
                 <Text style={styles.buttonText}>Get Elevation</Text>
@@ -193,10 +202,10 @@ export default class MapScreen extends React.Component {
                 latitudeDelta: this.state.latitudeDelta,
                 longitudeDelta: this.state.longitudeDelta,
               }}
-              pinColor={'gold'}>
+              pinColor={'skyblue'}>
               <Callout tooltip style={styles.bubble}>
                 <Text>Lat: {this.state.markerLat}</Text>
-                <Text>lon: {this.state.markerLon}</Text>
+                <Text>Lon: {this.state.markerLon}</Text>
                 <TouchableOpacity style={styles.button}>
                   <Text style={styles.buttonText}>Get Elevation</Text>
                 </TouchableOpacity>
@@ -207,7 +216,7 @@ export default class MapScreen extends React.Component {
         <TouchableOpacity
           onPress={() => this.getElevationDifference()}
           style={[styles.bubble, styles.button]}>
-          <Text style={styles.buttonText}>Get Elevation Difference</Text>
+          <Text style={styles.buttonText}>ELEVATION DIFFERENCE</Text>
         </TouchableOpacity>
       </View>
     );
@@ -227,6 +236,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
+    height: 23,
+    width: 223,
+    color: '#FFFFFF',
     textAlign: 'center',
   },
   itemContainer: {
@@ -247,17 +259,16 @@ const styles = StyleSheet.create({
     height: 35,
   },
   bubble: {
-    backgroundColor: 'red',
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderRadius: 20,
+    backgroundColor: '#0E9AFF',
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderRadius: 15,
   },
   button: {
-    width: 100,
-    paddingHorizontal: 8,
+    width: 253,
+    height: 54,
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 5,
   },
   elevateButtonSection: {
     width: '100%',
