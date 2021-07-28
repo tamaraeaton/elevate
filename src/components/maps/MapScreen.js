@@ -114,14 +114,13 @@ export default class MapScreen extends React.Component {
       this.userDestinationMarkerCalloutPress();
     }
     let difference = this.state.userElevation - this.state.desElevation;
-    console.log('Line 116, difference', difference);
+    console.log('Line 116, difference', difference.toFixed(2));
     if (difference != 0) {
       this.setState({
         elevationDifference: difference,
       });
-      Alert.alert(
-        
 
+      Alert.alert(        
           this.state.userElevation.toFixed(2) + ' and ' + this.state.desElevation.toFixed(2) + ' diff: ' + difference.toFixed(2)
 
           // + 
@@ -179,7 +178,7 @@ export default class MapScreen extends React.Component {
             }}>
             <Callout tooltip style={styles.bubble}>
               <Text>Lat: {this.state.userLat}</Text>
-              <Text>lon: {this.state.userLon}</Text>
+              <Text>Lon: {this.state.userLon}</Text>
               {/* <TouchableOpacity
                 style={styles.button}>
                 <Text style={styles.buttonText}>Get Elevation</Text>
