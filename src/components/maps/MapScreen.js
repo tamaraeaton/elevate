@@ -152,7 +152,7 @@ export default class MapScreen extends React.Component {
             latitudeDelta: this.state.latitudeDelta,
             longitudeDelta: this.state.longitudeDelta,
           }}
-          mapType={'standard'}
+          mapType={'satellite'}
           // stopPropagation={true}
           showsUserLocation={true}
           showsMyLocationButton={true}
