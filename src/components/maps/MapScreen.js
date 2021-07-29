@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-// import axios from 'axios';
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
@@ -130,7 +129,7 @@ export default class MapScreen extends React.Component {
           ' and ' +
           this.state.desElevation.toFixed(2) +
           ' diff: ' +
-          difference.toFixed(2)
+          difference.toFixed(2),
       );
     } else {
       this.setState({
@@ -142,9 +141,7 @@ export default class MapScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.blueTitle}>ELEVATE</Text>
         <MapView
-          // provider={PROVIDER_GOOGLE}
           style={styles.map}
           region={{
             latitude: this.state.latitude,
@@ -153,7 +150,6 @@ export default class MapScreen extends React.Component {
             longitudeDelta: this.state.longitudeDelta,
           }}
           mapType={'satellite'}
-          // stopPropagation={true}
           showsUserLocation={true}
           showsMyLocationButton={true}
           followsUserLocation={true}
@@ -180,13 +176,15 @@ export default class MapScreen extends React.Component {
               latitudeDelta: this.state.latitudeDelta,
               longitudeDelta: this.state.longitudeDelta,
             }}>
-            <Callout tooltip style={styles.bubble}>
-              <Text>Lat: {this.state.userLat}</Text>
-              <Text>Lon: {this.state.userLon}</Text>
-              {/* <TouchableOpacity
-                style={styles.button}>
-                <Text style={styles.buttonText}>Get Elevation</Text>
-              </TouchableOpacity> */}
+            <Callout tooltip>
+              <View style={styles.bubble}>
+                <Text style={styles.bubbleText}>
+                  Lat: {this.state.userLat.toFixed(2)}
+                </Text>
+                <Text style={styles.bubbleText}>
+                  Lon: {this.state.userLon.toFixed(2)}
+                </Text>
+              </View>
             </Callout>
           </MapView.Marker>
           {this.state.marker && (
@@ -200,21 +198,27 @@ export default class MapScreen extends React.Component {
                 longitudeDelta: this.state.longitudeDelta,
               }}
               pinColor={'skyblue'}>
-              <Callout tooltip style={styles.bubble}>
-                <Text>Lat: {this.state.markerLat}</Text>
-                <Text>Lon: {this.state.markerLon}</Text>
-                <TouchableOpacity style={styles.button}>
-
-                </TouchableOpacity>
+              <Callout tooltip>
+                <View style={styles.bubble}>
+                  <Text style={styles.bubbleText}>
+                    Lat: {this.state.markerLat.toFixed(2)}
+                  </Text>
+                  <Text style={styles.bubbleText}>
+                    Lon: {this.state.markerLon.toFixed(2)}
+                  </Text>
+                  <TouchableOpacity style={styles.button}></TouchableOpacity>
+                </View>
               </Callout>
             </Marker>
           )}
         </MapView>
-        <TouchableOpacity
-          onPress={() => this.getElevationDifference()}
-          style={[styles.bubble, styles.button]}>
-          <Text style={styles.buttonText}>ELEVATION DIFFERENCE</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonWrapper}>
+          <TouchableOpacity
+            onPress={() => this.getElevationDifference()}
+            style={styles.button}>
+            <Text style={styles.buttonText}>ELEVATION DIFFERENCE</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -247,30 +251,29 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingRight: 25,
   },
-  blueTitle: {
-    color: 'aqua',
-    fontWeight: 'bold',
-    fontSize: 25,
-    marginLeft: 120,
-    marginTop: 20,
-    height: 35,
-  },
   bubble: {
-    backgroundColor: '#0E9AFF',
-    paddingHorizontal: 5,
-    paddingVertical: 5,
     borderRadius: 15,
+    paddingLeft: 15,
+    padding: 1,
+    backgroundColor: '#0E9AFF',
+    width: 110,
+    height: 43,
+  },
+  bubbleText: {
+    color: '#FFFFFF',
   },
   button: {
+    backgroundColor: '#0E9AFF',
+    borderRadius: 15,
     width: 253,
     height: 54,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  elevateButtonSection: {
+  buttonWrapper: {
+    backgroundColor: '#FFFFFF',
     width: '100%',
-    height: '10%',
-    justifyContent: 'center',
     alignItems: 'center',
+    padding: 5,
   },
 });

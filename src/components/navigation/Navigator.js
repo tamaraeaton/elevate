@@ -21,7 +21,6 @@ function HomeStack() {
         component={HomeScreen}
         options={{
           headerShown: false,
-          headerTitleStyle: {flex: 1},
         }}
       />
     </StackHome.Navigator>
@@ -32,7 +31,13 @@ const StackMap = createStackNavigator();
 function LegalStack() {
   return (
     <StackMap.Navigator initialRouteName="Legal">
-      <StackMap.Screen name="Legal" component={LegalScreen} />
+      <StackMap.Screen
+        name="Legal"
+        component={LegalScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
     </StackMap.Navigator>
   );
 }
@@ -41,7 +46,13 @@ const StackInfo = createStackNavigator();
 function InfoStack() {
   return (
     <StackInfo.Navigator initialRouteName="Info">
-      <StackInfo.Screen name="Info" component={InfoScreen} />
+      <StackInfo.Screen
+        name="Info"
+        component={InfoScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
     </StackInfo.Navigator>
   );
 }
@@ -51,7 +62,7 @@ function Nav() {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
+          tabBarIcon: ({focused}) => {
             let iconName;
             //Add new Bottom-tabs here-------------------------
             if (route.name === 'Legal') {
@@ -79,12 +90,12 @@ function Nav() {
             );
           },
         })}
-        tabBarOptions={{
+        tabBarOptions={{          
           activeTintColor: 'red',
           inactiveTintColor: 'green',
         }}>
-        <Tab.Screen name="Info" component={InfoStack} />
         <Tab.Screen name="Map" component={HomeStack} />
+        <Tab.Screen name="Info" component={InfoStack} />
         <Tab.Screen name="Legal" component={LegalStack} />
       </Tab.Navigator>
     </NavigationContainer>
