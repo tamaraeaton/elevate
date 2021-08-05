@@ -1,18 +1,16 @@
-import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Dimensions,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
-import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import Geolocation from 'react-native-geolocation-service';
+import React from "react";
+import { Alert, Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import MapView, { Callout, Marker } from "react-native-maps";
+import Geolocation from "react-native-geolocation-service";
+
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+const mapDeltas = {
+  latitudeDelta: LATITUDE_DELTA,
+  longitudeDelta: LONGITUDE_DELTA,
+};
 export default class MapScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -20,8 +18,6 @@ export default class MapScreen extends React.Component {
       isLoading: true,
       latitude: 0,
       longitude: 0,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA,
       userLat: 0,
       userLon: 0,
       userElevation: 0,
@@ -31,37 +27,18 @@ export default class MapScreen extends React.Component {
       markerLon: 0,
       marker: null,
     };
-    this.userDestinationMarkerCalloutPress =
-      this.userDestinationMarkerCalloutPress.bind(this);
-    this.userLocationMarkerCalloutPress =
-      this.userLocationMarkerCalloutPress.bind(this);
   }
+
   userLocationMarkerCalloutPress = async () => {
     let userCoordinates = this.state.userLat + ',' + this.state.userLon;
     let userElevationCoordinates = userCoordinates.toString();
-    console.log(
-      'userElevationCoordinates IS working Line 46',
-      userElevationCoordinates,
-    );
     try {
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/elevation/json?locations=${userElevationCoordinates}&key=AIzaSyAC0rfEw46oQI8o22_X-ZSFCrIzPF-BZlk`,
       );
       const responseJson = await response.json();
-      console.log('responseJson Line 52', responseJson);
-      const currentElevation = responseJson.results[0].elevation;
-      console.log('Line 53, currentElevation1', currentElevation);
-      this.setState({userElevation: currentElevation}, () =>
-        console.log('Line 55, userElevation', this.state.userElevation),
-      );
-    } catch (error) {
-      console.error('Line 63 error', error);
-    }
-    console.log(
-      'Line 60 return this.state.userElevation',
-      this.state.userElevation,
-    );
-    return this.state.userElevation;
+      this.state.userElevation = responseJson.results[0].elevation;
+    } catch (error) {}
   };
   userDestinationMarkerCalloutPress = async () => {
     let markerCoordinates = this.state.markerLat + ',' + this.state.userLon;
@@ -89,9 +66,10 @@ export default class MapScreen extends React.Component {
     console.log('return destinationElevation', this.state.desElevation);
     return this.state.desElevation;
   };
+
   getUserPosition() {
     this.locationWatchId = Geolocation.watchPosition(
-      pos => {
+      (pos) => {
         console.log('pos1', pos);
         this.setState({
           latitude: pos.coords.latitude,
@@ -100,25 +78,27 @@ export default class MapScreen extends React.Component {
           userLon: pos.coords.longitude,
         });
       },
-      err => console.warn(err),
+      (err) => console.warn(err),
       {
         enableHighAccuracy: true,
       },
     );
   }
+
   componentWillUnmount() {
     Geolocation.clearWatch(this.locationWatchId);
   }
+
   componentDidMount() {
     this.getUserPosition();
   }
-  getElevationDifference() {
+
+  async getElevationDifference() {
     if (this.state.userLat && this.state.markerLat !== 0) {
-      this.userLocationMarkerCalloutPress();
-      this.userDestinationMarkerCalloutPress();
+      await this.userLocationMarkerCalloutPress();
+      await this.userDestinationMarkerCalloutPress();
     }
-    let difference = this.state.userElevation - this.state.desElevation;
-    console.log('Line 116, difference', difference.toFixed(2));
+    let difference = this.state.desElevation - this.state.userElevation;
     if (difference != 0) {
       this.setState({
         elevationDifference: difference,
@@ -138,6 +118,21 @@ export default class MapScreen extends React.Component {
     }
     console.log('diff.', this.state.elevationDifference);
   }
+
+  onPressMapHandler = (e) => {
+    this.setState({
+      markerLat: e.nativeEvent.coordinate.latitude,
+      markerLon: e.nativeEvent.coordinate.longitude,
+      marker: e.nativeEvent.coordinate,
+    });
+  };
+
+  onRegionChangeComplete = (event) => {
+    const {latitude, longitude} = event || {};
+    this.state.latitude = latitude;
+    this.state.longitude = longitude;
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -146,8 +141,7 @@ export default class MapScreen extends React.Component {
           region={{
             latitude: this.state.latitude,
             longitude: this.state.longitude,
-            latitudeDelta: this.state.latitudeDelta,
-            longitudeDelta: this.state.longitudeDelta,
+            ...mapDeltas,
           }}
           mapType={'satellite'}
           showsUserLocation={true}
@@ -160,21 +154,15 @@ export default class MapScreen extends React.Component {
           loadingEnabled={true}
           loadingBackgroundColor={'blue'}
           showsCompass={true}
-          onPress={e =>
-            this.setState({
-              markerLat: e.nativeEvent.coordinate.latitude,
-              markerLon: e.nativeEvent.coordinate.longitude,
-              marker: e.nativeEvent.coordinate,
-            })
-          }>
+          onPress={this.onPressMapHandler}
+          onRegionChangeComplete={this.onRegionChangeComplete}>
           <MapView.Marker
             identifier={'one'}
             title={'You are here!'}
             coordinate={{
               latitude: this.state.userLat,
               longitude: this.state.userLon,
-              latitudeDelta: this.state.latitudeDelta,
-              longitudeDelta: this.state.longitudeDelta,
+              ...mapDeltas,
             }}>
             <Callout tooltip>
               <View style={styles.bubble}>
@@ -194,8 +182,7 @@ export default class MapScreen extends React.Component {
               coordinate={{
                 latitude: this.state.markerLat,
                 longitude: this.state.markerLon,
-                latitudeDelta: this.state.latitudeDelta,
-                longitudeDelta: this.state.longitudeDelta,
+                ...mapDeltas,
               }}
               pinColor={'skyblue'}>
               <Callout tooltip>
@@ -206,7 +193,7 @@ export default class MapScreen extends React.Component {
                   <Text style={styles.bubbleText}>
                     Lon: {this.state.markerLon.toFixed(2)}
                   </Text>
-                  <TouchableOpacity style={styles.button}></TouchableOpacity>
+                  <TouchableOpacity style={styles.button} />
                 </View>
               </Callout>
             </Marker>
@@ -231,8 +218,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   map: {
-    height: 600,
-    width: 600,
+    height: '100%',
+    width: '100%',
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
